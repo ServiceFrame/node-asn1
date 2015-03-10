@@ -33,6 +33,15 @@ test('read byte', function(t) {
 });
 
 
+test('read 0 byte int', function(t) {
+  var reader = new BerReader(new Buffer([0x02, 0x00]));
+  t.ok(reader);
+  t.equal(reader.readInt(), -1, 'wrong value');
+  t.equal(reader.length, 0x00, 'wrong length');
+  t.end();
+});
+
+
 test('read 1 byte int', function(t) {
   var reader = new BerReader(new Buffer([0x02, 0x01, 0x03]));
   t.ok(reader);
@@ -69,6 +78,42 @@ test('read 4 byte int', function(t) {
 });
 
 
+test('read 5 byte int', function(t) {
+  var reader = new BerReader(new Buffer([0x02, 0x05, 0x02, 0xe2, 0x78, 0x57, 0xf2]));
+  t.ok(reader);
+  t.equal(reader.readInt(), 12389472242, 'wrong value');
+  t.equal(reader.length, 0x05, 'wrong length');
+  t.end();
+});
+
+
+test('read 6 byte int', function(t) {
+  var reader = new BerReader(new Buffer([0x02, 0x06, 0x01, 0x20, 0x77, 0x02, 0x5a, 0xcf]));
+  t.ok(reader);
+  t.equal(reader.readInt(), 1238947224271, 'wrong value');
+  t.equal(reader.length, 0x06, 'wrong length');
+  t.end();
+});
+
+
+test('read 7 byte int', function(t) {
+  var reader = new BerReader(new Buffer([0x02, 0x07, 0x04, 0x66, 0xd0, 0xe1, 0x32, 0xb9, 0x7f]));
+  t.ok(reader);
+  t.equal(reader.readInt(), 1238947224271231, 'wrong value');
+  t.equal(reader.length, 0x07, 'wrong length');
+  t.end();
+});
+
+
+test('read 8 byte int', function(t) {
+  var reader = new BerReader(new Buffer([0x02, 0x08, 0x01, 0xb8, 0x29, 0x97, 0xf7, 0xd0, 0x75, 0xb2]));
+  t.ok(reader);
+  t.equal(reader.readInt(), 123894722427123122, 'wrong value');
+  t.equal(reader.length, 0x08, 'wrong length');
+  t.end();
+});
+
+
 test('read 1 byte negative int', function(t) {
   var reader = new BerReader(new Buffer([0x02, 0x01, 0xdc]));
   t.ok(reader);
@@ -101,6 +146,41 @@ test('read 4 byte negative int', function(t) {
   t.ok(reader);
   t.equal(reader.readInt(), -1854135777, 'wrong value');
   t.equal(reader.length, 0x04, 'wrong length');
+  t.end();
+});
+
+
+test('read 5 byte negative int', function(t) {
+  var reader = new BerReader(new Buffer([0x02, 0x05, 0xe3, 0x27, 0x4c, 0x90, 0x85]));
+  t.ok(reader);
+  t.equal(reader.readInt(), -123894722427, 'wrong value');
+  t.equal(reader.length, 0x05, 'wrong length');
+  t.end();
+});
+
+test('read 6 byte negative int', function(t) {
+  var reader = new BerReader(new Buffer([0x02, 0x06, 0xf4, 0xbb, 0x59, 0xe8, 0x73, 0xe8]));
+  t.ok(reader);
+  t.equal(reader.readInt(), -12389472242712, 'wrong value');
+  t.equal(reader.length, 0x06, 'wrong length');
+  t.end();
+});
+
+
+test('read 7 byte negative int', function(t) {
+  var reader = new BerReader(new Buffer([0x02, 0x07, 0xfb, 0x99, 0x2f, 0x1e, 0xcd, 0x46, 0x81]));
+  t.ok(reader);
+  t.equal(reader.readInt(), -1238947224271231, 'wrong value');
+  t.equal(reader.length, 0x07, 'wrong length');
+  t.end();
+});
+
+
+test('read 8 byte negative int', function(t) {
+  var reader = new BerReader(new Buffer([0x02, 0x08, 0xfe, 0x47, 0xd6, 0x68, 0x08, 0x2f, 0x8a, 0x4e]));
+  t.ok(reader);
+  t.equal(reader.readInt(), -123894722427123122, 'wrong value');
+  t.equal(reader.length, 0x08, 'wrong length');
   t.end();
 });
 
